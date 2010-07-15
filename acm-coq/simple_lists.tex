@@ -1,0 +1,121 @@
+\documentclass[12pt]{report}
+\usepackage[]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fullpage}
+\usepackage{coqdoc}
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% This file has been automatically generated with the command
+%% coqdoc --latex simple_lists.v 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\coqlibrary{simplelists}{simple\_lists}
+
+\begin{coqdoccode}
+\end{coqdoccode}
+First we need to tell Coq how to construct a list \begin{coqdoccode}
+\coqdocnoindent
+\coqdockw{Inductive} \coqinductive{simplelists.natlist}{natlist} : \coqdockw{Type} :=\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqconstructor{simplelists.nil}{nil} : \coqinductiveref{simplelists.natlist}{natlist}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqconstructor{simplelists.cons}{cons} : \coqinductiveref{Coq.Init.Datatypes.nat}{nat} \ensuremath{\rightarrow} \coqinductiveref{simplelists.natlist}{natlist} \ensuremath{\rightarrow} \coqinductiveref{simplelists.natlist}{natlist}.\coqdoceol
+\coqdocemptyline
+\end{coqdoccode}
+Using this constructor we can then define lists \begin{coqdoccode}
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Definition} \coqdefinition{simplelists.l123}{l\_123} := \coqconstructorref{simplelists.cons}{cons} 1 (\coqconstructorref{simplelists.cons}{cons} 2 (\coqconstructorref{simplelists.cons}{cons} 3 \coqconstructorref{simplelists.nil}{nil})).\coqdoceol
+\coqdocemptyline
+\end{coqdoccode}
+Is is trivial to add notation for easier use of the list constructor \begin{coqdoccode}
+\coqdocnoindent
+\coqdockw{Notation} "x :: l" := (\coqconstructorref{simplelists.cons}{cons} \coqdocvar{x} \coqdocvar{l}) (\coqdoctac{at} \coqdocvar{level} 60, \coqdocvar{right} \coqdocvar{associativity}).\coqdoceol
+\coqdocnoindent
+\coqdockw{Notation} "[ ]" := \coqconstructorref{simplelists.nil}{nil}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Notation} "[ x , .. , y ]" := (\coqconstructorref{simplelists.cons}{cons} \coqdocvar{x} .. (\coqconstructorref{simplelists.cons}{cons} \coqdocvar{y} \coqconstructorref{simplelists.nil}{nil}) ..).\coqdoceol
+\coqdocemptyline
+\end{coqdoccode}
+Now we can define a few functions over lists \begin{coqdoccode}
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Fixpoint} \coqdefinition{simplelists.repeat}{repeat} (\coqdocvar{n} \coqdocvar{count} : \coqinductiveref{Coq.Init.Datatypes.nat}{nat}) \{\coqdockw{struct} \coqdocvar{count}\} : \coqinductiveref{simplelists.natlist}{natlist} := \coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{match} \coqdocvar{count} \coqdockw{with}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqconstructorref{Coq.Init.Datatypes.O}{O} \ensuremath{\Rightarrow} \coqconstructorref{simplelists.nil}{nil}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqconstructorref{Coq.Init.Datatypes.S}{S} \coqdocvar{count'} \ensuremath{\Rightarrow} \coqdocvar{n} :: (\coqdefinitionref{simplelists.repeat}{repeat} \coqdocvar{n} \coqdocvar{count'})\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{end}.\coqdoceol
+\coqdocemptyline
+\end{coqdoccode}
+The \coqdocvar{length} function calculates the length of a
+    list. \begin{coqdoccode}
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Fixpoint} \coqdefinition{simplelists.length}{length} (\coqdocvar{l}:natlist) \{\coqdockw{struct} \coqdocvar{l}\} : \coqinductiveref{Coq.Init.Datatypes.nat}{nat} := \coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{match} \coqdocvar{l} \coqdockw{with}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqconstructorref{simplelists.nil}{nil} \ensuremath{\Rightarrow} \coqconstructorref{Coq.Init.Datatypes.O}{O}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{h} :: \coqdocvar{t} \ensuremath{\Rightarrow} \coqconstructorref{Coq.Init.Datatypes.S}{S} (\coqdefinitionref{simplelists.length}{length} \coqdocvar{t})\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{end}.\coqdoceol
+\coqdocemptyline
+\end{coqdoccode}
+The \coqdocvar{app} function concatenates two lists. \begin{coqdoccode}
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Fixpoint} \coqdefinition{simplelists.app}{app} (\coqdocvar{l1} \coqdocvar{l2} : \coqinductiveref{simplelists.natlist}{natlist}) \{\coqdockw{struct} \coqdocvar{l1}\} : \coqinductiveref{simplelists.natlist}{natlist} := \coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{match} \coqdocvar{l1} \coqdockw{with}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqconstructorref{simplelists.nil}{nil}    \ensuremath{\Rightarrow} \coqdocvar{l2}\coqdoceol
+\coqdocindent{1.00em}
+\ensuremath{|} \coqdocvar{h} :: \coqdocvar{t} \ensuremath{\Rightarrow} \coqdocvar{h} :: (\coqdefinitionref{simplelists.app}{app} \coqdocvar{t} \coqdocvar{l2})\coqdoceol
+\coqdocindent{1.00em}
+\coqdockw{end}.\coqdoceol
+\coqdocemptyline
+\end{coqdoccode}
+In fact, \coqdocvar{app} will be used so pervasively in
+    some parts of what follows that it is convenient to
+    have an infix operator for it. \begin{coqdoccode}
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Notation} "x ++ y" := (\coqdefinitionref{simplelists.app}{app} \coqdocvar{x} \coqdocvar{y}) \coqdoceol
+\coqdocindent{10.50em}
+(\coqdocvar{right} \coqdocvar{associativity}, \coqdoctac{at} \coqdocvar{level} 60).\coqdoceol
+\coqdocemptyline
+\end{coqdoccode}
+One trivial theorem we can show is the indentity of a list using  \begin{coqdoccode}
+\coqdocnoindent
+\coqdockw{Theorem} \coqlemma{simplelists.nilapp}{nil\_app} : \ensuremath{\forall} \coqdocvar{l}:natlist,\coqdoceol
+\coqdocindent{1.00em}
+[] ++ \coqdocvar{l} = \coqdocvar{l}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Proof}.\coqdoceol
+\coqdocindent{1.50em}
+\coqdoctac{reflexivity}. \coqdockw{Qed}.\coqdoceol
+\coqdocemptyline
+\end{coqdoccode}
+A more complex theorem involving induction \begin{coqdoccode}
+\coqdocnoindent
+\coqdockw{Theorem} \coqdocvar{ass\_app} : \ensuremath{\forall} \coqdocvar{l1} \coqdocvar{l2} \coqdocvar{l3} : \coqdocvar{natlist}, \coqdoceol
+\coqdocindent{1.00em}
+\coqdocvar{l1} ++ (\coqdocvar{l2} ++ \coqdocvar{l3}) = (\coqdocvar{l1} ++ \coqdocvar{l2}) ++ \coqdocvar{l3}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Proof}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdoctac{intros} \coqdocvar{l1} \coqdocvar{l2} \coqdocvar{l3}. \coqdoctac{induction} \coqdocvar{l1} \coqdockw{as} [\ensuremath{|} \coqdocvar{n} \coqdocvar{l1'}].\coqdoceol
+\coqdocindent{1.00em}
+\coqdocvar{Case} "l1 = nil".\coqdoceol
+\coqdocindent{2.00em}
+\coqdoctac{reflexivity}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdocvar{Case} "l1 = cons n l1'".\coqdoceol
+\coqdocindent{2.00em}
+\coqdoctac{simpl}. \coqdoctac{rewrite} \ensuremath{\rightarrow} \coqdocvar{IHl1'}. \coqdoctac{reflexivity}. \coqdockw{Qed}.\coqdoceol
+\end{coqdoccode}
+\end{document}

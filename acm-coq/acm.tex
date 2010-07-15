@@ -1,0 +1,170 @@
+\documentclass[12pt]{report}
+\usepackage[]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fullpage}
+\usepackage{coqdoc}
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% This file has been automatically generated with the command
+%% coqdoc --latex acm.v 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\coqlibrary{acm}{acm}
+
+\begin{coqdoccode}
+\end{coqdoccode}
+Acm Presentation - Proving stuff with Coq
+
+
+\begin{coqdoccode}
+\coqdocemptyline
+\end{coqdoccode}
+Here we can see some examples of Propositional Logic \begin{coqdoccode}
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Require} \coqdockw{Import} \coqlibraryref{Coq.Logic.Classical}{Classical}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Theorem} \coqlemma{acm.sillyprop}{silly\_prop} :forall (\coqdocvar{A} \coqdocvar{B} \coqdocvar{C}: \coqdockw{Prop}), \coqdoceol
+\coqdocindent{1.00em}
+(\coqdocvar{A} \ensuremath{\rightarrow} (\coqdocvar{B} \ensuremath{\rightarrow} \coqdocvar{C})) \ensuremath{\rightarrow} (\coqdocvar{A} \ensuremath{\rightarrow} \coqdocvar{B}) \ensuremath{\rightarrow} (\coqdocvar{A} \ensuremath{\rightarrow} \coqdocvar{C}).\coqdoceol
+\coqdocnoindent
+\coqdockw{Proof}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdoctac{intros} \coqdocvar{A} \coqdocvar{B} \coqdocvar{C} \coqdocvar{H1} \coqdocvar{HA} \coqdocvar{H2}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdoctac{apply} \coqdocvar{H1}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdoctac{apply} \coqdocvar{H2}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdoctac{apply} \coqdocvar{HA}.\coqdoceol
+\coqdocindent{1.00em}
+\coqdoctac{assumption}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Qed}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Lemma} \coqdocvar{and\_comm} : \ensuremath{\forall} (\coqdocvar{A} \coqdocvar{B} : \coqdockw{Prop}), \coqdocvar{A} \ensuremath{\land} \coqdocvar{B} \ensuremath{\rightarrow} \coqdocvar{B} \ensuremath{\land} \coqdocvar{A}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Proof}.\coqdoceol
+\coqdocnoindent
+\coqdoctac{intros} \coqdocvar{A} \coqdocvar{B} \coqdocvar{H}.\coqdoceol
+\coqdocnoindent
+\coqdoctac{elim} \coqdocvar{H}.\coqdoceol
+\coqdocnoindent
+\coqdoctac{split}.\coqdoceol
+\coqdocnoindent
+\coqdoctac{apply} \coqdocvar{H1}.\coqdoceol
+\coqdocnoindent
+\coqdoctac{apply} \coqdocvar{H0}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Qed}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Lemma} \coqdocvar{or\_comm} : \ensuremath{\forall} (\coqdocvar{A} \coqdocvar{B} : \coqdockw{Prop}), \coqdocvar{A} \ensuremath{\lor} \coqdocvar{B} \ensuremath{\rightarrow} \coqdocvar{B} \ensuremath{\lor} \coqdocvar{A}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Proof}.\coqdoceol
+\coqdocnoindent
+\coqdoctac{intros} \coqdocvar{A} \coqdocvar{B} \coqdocvar{H}.\coqdoceol
+\coqdocnoindent
+\coqdoctac{elim} \coqdocvar{H}.\coqdoceol
+\coqdocnoindent
+\coqdocvar{right}. \coqdoctac{trivial}.\coqdoceol
+\coqdocnoindent
+\coqdocvar{left}. \coqdoctac{trivial}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Qed}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Theorem} \coqdocvar{silly\_ex} : \ensuremath{\forall} (\coqdocvar{A} \coqdocvar{B} \coqdocvar{C} : \coqdockw{Prop}),\coqdoceol
+\coqdocindent{1.00em}
+(\coqdocvar{A} \ensuremath{\lor} \coqdocvar{B}) \ensuremath{\land} (\coqdocvar{A} \ensuremath{\lor} \coqdocvar{C}) \ensuremath{\land} \ensuremath{\lnot} \coqdocvar{A} \ensuremath{\rightarrow} \coqdocvar{B} \ensuremath{\land} \coqdocvar{C}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Proof}.\coqdoceol
+\coqdocnoindent
+\coqdoctac{intros}.\coqdoceol
+\coqdocnoindent
+\coqdoctac{destruct} \coqdocvar{H}. \coqdoctac{destruct} \coqdocvar{H0}.\coqdoceol
+\coqdocnoindent
+\coqdoctac{destruct} \coqdocvar{H}.\coqdoceol
+\coqdocnoindent
+\coqdoctac{destruct} (\coqdocvar{H1} \coqdocvar{H}).\coqdoceol
+\coqdocnoindent
+\coqdoctac{destruct} \coqdocvar{H0}.\coqdoceol
+\coqdocnoindent
+\coqdoctac{destruct} (\coqdocvar{H1} \coqdocvar{H0}).\coqdoceol
+\coqdocnoindent
+\coqdoctac{split}.\coqdoceol
+\coqdocnoindent
+\coqdoctac{assumption}.\coqdoceol
+\coqdocnoindent
+\coqdoctac{assumption}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Qed}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Theorem} \coqdocvar{ex1} : \ensuremath{\forall} (\coqdocvar{A} \coqdocvar{B} \coqdocvar{C} \coqdocvar{D}:Prop),\coqdoceol
+\coqdocindent{1.00em}
+(\coqdocvar{A} \ensuremath{\lor} \coqdocvar{B}) \ensuremath{\rightarrow} (\coqdocvar{B} \ensuremath{\land} \coqdocvar{C}) \ensuremath{\rightarrow} (\coqdocvar{B} \ensuremath{\rightarrow} \coqdocvar{C}) \ensuremath{\lor} \coqdocvar{D}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Proof}.\coqdoceol
+\coqdocnoindent
+\coqdoctac{intros}.\coqdoceol
+\coqdocnoindent
+\coqdoctac{destruct} \coqdocvar{H0}.\coqdoceol
+\coqdocnoindent
+\coqdocvar{left}.\coqdoceol
+\coqdocnoindent
+\coqdoctac{intros}.\coqdoceol
+\coqdocnoindent
+\coqdoctac{apply} \coqdocvar{H1}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Qed}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Theorem} \coqdocvar{ex2}: \ensuremath{\forall} (\coqdocvar{A} \coqdocvar{B} \coqdocvar{C} \coqdocvar{D}:Prop),\coqdoceol
+\coqdocindent{1.00em}
+\~{}(A \ensuremath{\land} \coqdocvar{B}) \ensuremath{\land} (\coqdocvar{B} \ensuremath{\lor} \coqdocvar{C}) \ensuremath{\land} (\coqdocvar{C} \ensuremath{\rightarrow} \coqdocvar{D}) \ensuremath{\rightarrow} (\coqdocvar{A} \ensuremath{\rightarrow} \coqdocvar{D}).\coqdoceol
+\coqdocnoindent
+\coqdockw{Proof}.\coqdoceol
+\coqdocnoindent
+\coqdoctac{intros}.\coqdoceol
+\coqdocnoindent
+\coqdoctac{destruct} \coqdocvar{H}.\coqdoceol
+\coqdocnoindent
+\coqdoctac{destruct} \coqdocvar{H1}.\coqdoceol
+\coqdocnoindent
+\coqdoctac{apply} \coqdocvar{H2}.\coqdoceol
+\coqdocnoindent
+\coqdoctac{destruct} \coqdocvar{H1}.\coqdoceol
+\coqdocnoindent
+\coqdoctac{generalize}( \coqdocvar{conj} \coqdocvar{H0} \coqdocvar{H1}).\coqdoceol
+\coqdocnoindent
+\coqdoctac{intros}.\coqdoceol
+\coqdocnoindent
+\coqdoctac{destruct}(\coqdocvar{H} \coqdocvar{H3}).\coqdoceol
+\coqdocnoindent
+\coqdoctac{apply} \coqnotationref{Coq.Init.Logic.".x"}{H1}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Qed}.\coqdoceol
+\coqdocemptyline
+\coqdocnoindent
+\coqdockw{Theorem} \coqdocvar{ex3} : \ensuremath{\forall} (\coqdocvar{A}  \coqdocvar{B} \coqdocvar{C} \coqdocvar{D}:Prop),\coqdoceol
+\coqdocindent{1.00em}
+\coqdocvar{A} \ensuremath{\land} ((\coqdocvar{A} \ensuremath{\rightarrow} \coqdocvar{B}) \ensuremath{\lor} (\coqdocvar{C} \ensuremath{\land} \coqdocvar{D})) \ensuremath{\rightarrow} (\~{}B \ensuremath{\rightarrow} \coqdocvar{C}).\coqdoceol
+\coqdocnoindent
+\coqdockw{Proof}.\coqdoceol
+\coqdocnoindent
+\coqdoctac{intros} ? ? ? ? [\coqdocvar{H1} \coqdocvar{H2}] ?.\coqdoceol
+\coqdocnoindent
+\coqdoctac{destruct} \coqdocvar{H2}. \coqdoctac{destruct} \coqdocvar{H}.\coqdoceol
+\coqdocnoindent
+\coqdoctac{apply} \coqdocvar{H0}.\coqdoceol
+\coqdocnoindent
+\coqdoctac{apply} \coqdocvar{H1}.\coqdoceol
+\coqdocnoindent
+\coqdoctac{apply} \coqdocvar{H0}.\coqdoceol
+\coqdocnoindent
+\coqdockw{Qed}.\coqdoceol
+\coqdocemptyline
+\end{coqdoccode}
+\end{document}

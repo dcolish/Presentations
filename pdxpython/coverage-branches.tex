@@ -1,0 +1,83 @@
+\documentclass{beamer}
+\usepackage{listings}
+\usepackage{beamerthemesplit}
+\usepackage{hyperref}
+
+\title{Test reporting with Coverage}
+\author{Dan Colish}
+\date{\today}
+
+\begin{document}
+\frame{\titlepage}
+
+\frame
+{
+  \frametitle{Checking your code coverage!}
+  \begin{center}
+  \includegraphics[scale=0.35]{laughing-goat.jpeg}
+  \end{center}
+  \begin{itemize}
+    \item Shows the effectivness of your testing
+    \item Highlights areas for new or increased testing
+    \item Helps to verify that our tests do what we think they do
+  \end{itemize}
+  
+  The utility for test coverage is coverage.py \\
+  \small\url{http://nedbatchelder.com/code/coverage/}.
+}
+
+\frame {
+  \frametitle{Using coverage.py}
+  \begin{itemize}
+   \item Features
+     \begin{itemize}
+     \item Integrates with the nose test suite 
+     \item Generates a variety of HTML, XML, and console reports
+     \item Can be called from anywhere in your code
+     \item Tracks multiple subprocesses and mutliple code branches
+     \end{itemize}
+   \item Configuration
+     \begin{itemize}
+       \item Commandline options ('--omit', '--branch', etc)
+       \item .coveragerc [this is better]
+       \end{itemize}
+
+   \item Running It
+     \begin{itemize}
+       \item With nose use '--with-coverage --cover-package=[some
+         package]'
+       \item On the commandline 'coverage run [options]'
+     \end{itemize}
+   \end{itemize}
+}
+
+\begin{frame}[fragile]
+  \frametitle{We need to talk about your TPS reports.}
+  If you ran your tests with `-p` or in parallel, you'll need to
+  execute `coverage combine` first.
+  \begin{itemize}
+    \item HTML Reporting
+      \begin{itemize} 
+        \item Generate with `coverage html`
+        \item use '-d' to specify a directory for your output
+        \item open index.html in that dir for reports
+      \end{itemize}
+   \item XML Reporting
+     \begin{itemize}
+       \item Generate with `coverage xml`
+       \item similar options to html reports
+       \item integrates pretty well with Hudson
+     \end{itemize}
+  \end{itemize}
+  You will need to omit things like Genshi templates report
+\lstset{language=Python,basicstyle=\tiny}
+\begin{lstlisting}
+[html]
+directory=coverage_html_report
+omit=lib,tests2,idealist/webapp/templates/,idealist/webapp/org/templates/
+\end{lstlisting}
+\end{frame}  
+
+
+\end{document}
+   

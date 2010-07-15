@@ -1,0 +1,176 @@
+\documentclass{beamer}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{beamerthemeCopenhagen}
+\usepackage{hyperref}
+\usepackage{graphviz}
+
+\title{Using PLY For Great Good}
+\author{Dan Colish}
+\date{\today}
+
+\begin{document}
+\frame{\titlepage}
+
+\frame[<+->]
+{
+  \frametitle{Whirlwind Tour of Grammars}
+    \begin{block}{Definition: Context Free Grammar}
+      \begin{itemize}[<1->]
+        \item $V$ a finite set of non-terminals or variables
+        \item $\sigma$ a set of terminals
+        \item $R$ the relation of productions
+        \item $S$ the grammars start style
+        \end{itemize}
+      \end{block}
+      \begin{block}{Example: $L_{ab} = \{a^n b^n : n \geq 0\}$}
+        \begin{itemize}[<1->]
+        \item $V = {S}$
+        \item $\sigma = {a, b}$
+        \item $R = \{S \rightarrow aSb\}$
+        \end{itemize}
+      \end{block}
+}
+ 
+\frame[<+->]
+{
+  \frametitle{Using grammars in the real world}
+    \begin{block}{A few things they do}
+      \begin{itemize}[<1->]
+        \item Design \& implement languages
+        \item Recognize patterns in input/output
+        \item Construct interactive programs 
+        \end{itemize}
+      \end{block}
+
+      \begin{block}{BNF: the grammar you know}
+        \begin{itemize}[<1->]
+          \item<1-> Developed by John Backus and Peter Naur in the 1960's
+          \item Looks like $<symbol> ::= \_\_expression\_\_$
+          \item Also looks like\\
+            $list\_display ::=  "[" [expression\_list | list\_comprehension] "]"$\\
+            $list\_comprehension  ::=  expression list\_for$\\
+            % $name ::=  lc\_letter (lc\_letter | "_")* $\\
+            % $lc\_letter ::=  "a"..."z"$\\
+            \tiny\url{http://docs.python.org/reference/expressions.html}
+          \end{itemize}
+        \end{block}
+}
+
+\frame[<+->]
+{
+  \frametitle{Some more grammar business}
+  \begin{columns}[t]
+    
+    \column{2in}<1->
+    \textbf The Parse Tree
+    \digraph {Calc}{
+      size=2;
+        S -> "*";
+        "*" -> "+";
+        "*" -> z ;
+        "+" -> x;
+        "+" -> y;
+      }
+      \column{2in}
+      \textbf The Matching Grammar
+      \begin{align*}
+        T &\rightarrow x \\
+        T &\rightarrow y \\
+        T &\rightarrow z \\
+        S &\rightarrow S + T \\
+        S &\rightarrow S - T \\
+        S &\rightarrow S * T \\
+        S &\rightarrow S / T \\
+        T &\rightarrow ( S ) \\
+        S &\rightarrow T
+      \end{align*}
+ 
+    \end{columns}
+    \footnotesize \url{http://en.wikipedia.org/wiki/Context-free_grammar}
+}
+
+\frame[<+->]
+{
+  \frametitle{Introducing the tools}
+  \begin{block}{PLY}
+  \begin{itemize}[<1->]
+    \item<1-> For building Yacc Style Grammars
+    \item Defining lexer tokens are the terminal set $\sigma$
+    \item Defining production rules represent $R$
+    \item Production rules are defined in docstrings
+    \item Always resolves Shift/Reduce with Shift
+    \end{itemize}
+    \end{block}
+
+    \begin{block}{Example: PLY Grammar}
+      \lstinputlisting[language=Python,basicstyle=\tiny]{sample_grammar.py}
+     \end{block}
+}
+      
+\frame[<+->]
+{
+  \frametitle{What to avoid when building grammars}
+  \begin{block}{Don't}
+    \begin{itemize}[<1->]
+      \item use complex lexer tokens
+      \item write the grammar before the semantics
+      \item work in large increments
+      \end{itemize}
+    \end{block}
+    \begin{block}{Do}
+      \begin{itemize}[<1->]
+      \item write out the productions for your grammar on paper
+      \item allow the parser to do the syntax not the lexer
+      \item only do one thing in each production
+      \item try optimizing only when your grammar is complete
+      \end{itemize}
+    \end{block}
+  }
+
+\frame[<+->]
+{
+  \frametitle{What I ended up doing}
+  \begin{block}{The output... grrrr}
+    \lstinputlisting[basicstyle=\footnotesize]{coq_output.txt}
+   \end{block}
+
+   \begin{block}{A few problems}
+    \begin{itemize}[<1->]
+      \item regex won't easily work 
+      \item this is still only a simple bit of output
+        \end{itemize}
+      \end{block}
+}
+
+\frame[<+->]
+{
+  \frametitle{A bit of grammar the implementation}
+  \lstinputlisting[language=Python,basicstyle=\tiny]{sample_implementation.py}
+
+}
+
+\frame[<+->]
+{
+  \frametitle{Seventh inning stretch: Demo Time}
+
+    \begin{center}
+    \includegraphics[scale=0.75]{cats_dont_care_frame}\\
+    \footnotesize\url{http://imgur.com/gallery/f5kzo}
+    \end{center}
+}
+
+\frame
+{
+  \frametitle{Additional Resources}
+  \begin{itemize}
+  \item \url{http://en.wikipedia.org/wiki/Context-free_grammar}
+  \item \url{http://dinosaur.compilertools.net/}
+  \item \url{http://www.dabeaz.com/ply/}
+  \item \url{http://www.mostly-decidable.org}
+  \item \url{http://github.com/dcolish/Cockerel/tree/master/coqd/parser/}
+  \end{itemize}
+}
+
+
+\end{document}
