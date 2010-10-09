@@ -1,0 +1,17 @@
+*.nav
+auto
+*.pdf
+*.dvi
+*.log
+*.snm
+*.toc
+*.sty
+*.vrb
+*.tree
+*.css
+*.gv
+*.png
+*.jpg
+_region_.*
+*.html
+.tex

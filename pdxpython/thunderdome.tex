@@ -1,0 +1,27 @@
+\documentclass{beamer}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{beamerthemeCopenhagen}
+\usepackage{hyperref}
+\usepackage{graphviz}
+
+\title{tASTy}
+\author{Dan Colish}
+\date{\today}
+
+\begin{document}
+\frame{\titlepage}
+
+\frame{
+  \begin{block}{Remember our old friend the grammar tree??}
+    \digraph {Calc}{
+      size=2;
+        S -> "*";
+        "*" -> "+";
+        "*" -> z ;
+        "+" -> x;
+        "+" -> y;
+      }
+    \end{block}
+}
+\end{document}

@@ -1,0 +1,23 @@
+route url =>
+    '/' => call index
+    '/user/<id:int>' => require_login and call user_profile
+    
+require_login session => 
+   if auth is valid => 
+       proceed to requested url
+   else => 
+       redirect to login with next as requested url
+   
+user_profile userid =>
+    load data with id = userid into context
+    return rendered context in template userprofile
+
+login next =>
+    if method is post => 
+         process form data and validate
+         if validate is successful => 
+             redirect to next
+         else => 
+             return form with errors
+    if method is get =>
+        return blank form

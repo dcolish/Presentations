@@ -1,0 +1,128 @@
+\documentclass{beamer}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{beamerthemeCopenhagen}
+\usepackage{hyperref}
+\usepackage{graphviz}
+
+
+\title{Web Programming}
+\author{Dan Colish}
+\date{\today}
+
+\begin{document}
+\frame{\titlepage}
+\frame[<+->]
+{
+  \frametitle{WTF is web programming}
+  \begin{block}{What its not}
+    \begin{itemize}[<1->]
+    \item trivial or easy
+    \item not worth proper engineering
+    \item not CS enough
+    \item LOLcats
+   \end{itemize}
+  \end{block}
+
+  \begin{block}{What it is}
+    \begin{itemize}[<1->]
+    \item Highly sophisticated
+    \item deals with core issues of CS
+    \item easy to get wrong
+    \item difficult to avoid
+    \end{itemize}
+  \end{block}
+}
+
+\frame[<+->]
+{
+  \frametitle{Anatomy of a webapp}
+  \begin{block}{Routing and handling}
+    \begin{itemize}[<+->]
+    \item Webapps typically consist of two main components
+      \begin{itemize}[<+->]
+      \item Router: matches url endpoints to handlers
+      \item Handlers: function to execute with incoming request data
+      \end{itemize}
+    \item This is a very common pattern for event driven programming!
+    \item Routing logically maps requests to the objects it returns
+      
+    \end{itemize}
+  \end{block}
+}
+
+\frame[<+->]{
+  \frametitle{ZOMG THE BIG PICTURE!}
+  \begin{block}{The server request/response cycle}
+    \begin{itemize}[<+->]
+    \item server receives request from the network
+    \item passes endpoint through the router
+    \item router matches to handler and dispatches(calls handler)
+    \item handler returns repsonse to client
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{What does that mean?}
+    \begin{itemize}[<+->]
+    \item objects typically don't persist a request/response cycle
+    \item you'll need to store the data elsewhere, then load per request
+    \end{itemize}
+  \end{block}
+}
+
+\frame{
+  \frametitle{whats it look like}
+  \begin{block}{HelloWorld}
+    A simple application pseudocode might look like this
+    \lstinputlisting[basicstyle=\tiny]{pseudocode.txt}
+  \end{block}
+}
+
+\frame{
+  \frametitle{did that just happen?}
+  \begin{block}{breaking it down, one more time}
+  \begin{itemize} 
+  \item application waits for a call to the router; typically the main entrypoint
+  \item router matches url pattern and passes to mapped function
+  \item function executes and returns response data
+  \end{itemize}
+  \end{block}
+
+  \bf{OK, so whats so hard about that?}
+}
+
+\frame[<+->]
+{
+  \frametitle{The devil is in the details}
+  \begin{block}{Mistakes we've made}
+    \begin{itemize}
+    \item too many different url/view classes
+    \item you didnt think about your data model before coding
+    \item your forms don't validate
+    \item the code base is a mess of circular imports
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{What to do about it}
+    \begin{itemize}
+      \item keep your map simple and use smarter matching
+      \item really consider what data you'll need and how you're going to manage it
+      \item ***HOLY COW! ALWAYS VALIDATE FORM DATA***
+      \item keep you code clean and well organized, take time to have reviews
+      \item scaling isn't about adding users, its about adding code
+      \end{itemize}
+    \end{block}
+}
+
+\frame
+{
+  \frametitle{Questions??}
+  \begin{block}{Contact Info}
+  \begin{itemize}
+    \item Dan Colish [dcolish@gmail.com]
+    \item http://mostly-decidable.org
+  \end{itemize}
+\end{block}
+}
+
+\end{document}
