@@ -1,9 +1,15 @@
 \documentclass{beamer}
 \usepackage{beamerthemesplit}
+\usepackage[style=authoryear,hyperref=true,citestyle=numeric]{biblatex} 
+\usepackage{hyperref}
+\usepackage[all]{xy}
+
+\addbibresource{presentation}
 
 \title{Hadoop Hears a Who}
 \author{Dan Colish}
 \date{\today}
+
 
 \begin{document}
 \frame{\titlepage}
@@ -15,11 +21,13 @@
 {
   \frametitle{Webcrawlers and storage}
   In 2004, the opensource webcrawler project \emph{Nutch} was looking for a
-  storage solution.
+  storage and data processing solution.
 
   \begin{itemize}
     \item Provide fault tolerance
     \item Scale to storing millions of pages
+    \item Avoid read/write bottlenecks
+    \item Process large amounts of data on demand
   \end{itemize}
 
 }
@@ -27,17 +35,107 @@
 
 \frame
 {
-  \frametitle{}
-  
+  \frametitle{HDFS: Hadoop's Filesystem}
+
+  HDFS is a distributed, fault tolerant userspace filesystem.
+
+  \begin{itemize}
+    \item Composed of two core services: the namenode and the datanode
+    \item Replicates blocks as they are written
+    \item Balances blocks, all nodes share ~= partition of data
+    \item Provides partition tolerance against datanode loss
+  \end {itemize}
 
 }
 
 
+\frame
+{
+  \frametitle{Architecture of HDFS}
+  \includegraphics[width=\textwidth]{hdfsarchitecture.png}
+  \cite{hadoopdocs}
+}
+
+\frame
+{
+  \frametitle{MapReduce: Hadoop's Data Processing System}
+  \begin{displaymath}
+    \xymatrix{ 
+      *+[Fe:blue]{JobClient} \ar[dr] & & \\
+      & *+[F=:magenta]{JobTracker} \ar[dl] \ar[d] \ar[dr] & \\
+      *+[F]{TaskTracker} & *+[F]{TaskTracker} & *+[F]{TaskTracker}
+    }
+  \end{displaymath}
+}
+
+
+\subsection{Hadoop Services in Depth}
+
+\frame 
+{
+  \frametitle{Namenode}
+}
+
+\frame 
+{
+  \frametitle{Datanode}
+}
+
+\frame 
+{
+  \frametitle{JobTracker}
+}
+
+\frame 
+{
+  \frametitle{TaskTracker}
+}
+
+\subsection{Developing MapReduce Jobs}
+
+\frame
+{
+  \frametitle{The Lifecycle of a MapReduce job}
+
+}
+
+\frame
+{
+  \frametitle{A Sample Job}
+
+}
+
+\frame
+{
+  \frametitle{Submitting and Monitoring Jobs}
+}
+
+
+\subsection{Developing a MapReduce Job}
+
+\frame
+{
+  \frametitle{Writing Jobs in Java}
+}
+
+
+\subsection{Running a Cluster}
+
+\frame 
+{
+  \frametitle{Hosted Hadoop}
+  % Cluster mgmt is time consuming and expensive.
+  % off load to service providers when possible
+}
+
+
+\frame
+{
+  \frametitle{References}
+  \printbibliography
+}
 
 \end{document}
-
-
-
 
 % HA setup wtih hdfs
 % http://hadoop.apache.org/docs/current/hadoop-yarn/hadoop-yarn-site/HDFSHighAvailabilityWithQJM.html
