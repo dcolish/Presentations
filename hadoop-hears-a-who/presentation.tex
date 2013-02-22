@@ -4,18 +4,18 @@
 \usepackage{hyperref}
 \usepackage[all]{xy}
 
+\useoutertheme{infolines}
+
 \addbibresource{presentation}
 
 \title{Hadoop Hears a Who}
 \author{Dan Colish}
 \date{\today}
 
-
 \begin{document}
 \frame{\titlepage}
 
-\section{A brief overview of Hadoop}
-\subsection{What is Hadoop}
+\section{What is Hadoop}
 
 \frame
 {
@@ -41,6 +41,7 @@
 
   \begin{itemize}
     \item Composed of two core services: the namenode and the datanode
+    \item Files are split into blocks
     \item Replicates blocks as they are written
     \item Balances blocks, all nodes share ~= partition of data
     \item Provides partition tolerance against datanode loss
@@ -48,13 +49,33 @@
 
 }
 
-
 \frame
 {
   \frametitle{Architecture of HDFS}
-  \includegraphics[width=\textwidth]{hdfsarchitecture.png}
+  \includegraphics[trim=0 0 0 15mm, clip, width=\linewidth]{hdfsarchitecture.png}
   \cite{hadoopdocs}
 }
+
+\frame 
+{
+  \frametitle{Namenode}
+  \begin{itemize}
+    \item Controls filesystem metadata and block placement
+    \item Executes all non-idempotent file and directory operations
+    \item Weak point of typical deployment (SPOF)
+    \item Supervises datanode health
+  \end{itemize}
+}
+
+\frame 
+{
+  \frametitle{Datanode}
+  \begin{itemize}
+    \item Serves read and write requests
+    \item Executes all block operations
+  \end{itemize}  
+}
+
 
 \frame
 {
@@ -62,70 +83,79 @@
   \begin{displaymath}
     \xymatrix{ 
       *+[Fe:blue]{JobClient} \ar[dr] & & \\
-      & *+[F=:magenta]{JobTracker} \ar[dl] \ar[d] \ar[dr] & \\
-      *+[F]{TaskTracker} & *+[F]{TaskTracker} & *+[F]{TaskTracker}
+      & *+[F=:magenta]{JobTracker} \ar[dl] \ar[d] \ar[dr] \\
+      *+[F]{TaskTracker} \ar[d] & *+[F]{TaskTracker} \ar[d] & *+[F]{TaskTracker} \ar[d] \\
+      *+[Fe]{Task} & *+[Fe]{Task} & *+[Fe]{Task}
     }
   \end{displaymath}
 }
 
 
-\subsection{Hadoop Services in Depth}
-
-\frame 
-{
-  \frametitle{Namenode}
-}
-
-\frame 
-{
-  \frametitle{Datanode}
-}
-
 \frame 
 {
   \frametitle{JobTracker}
+  \begin{itemize}
+    \item Schedules Jobs
+    \item Supervises TaskTrackers
+  \end{itemize}
 }
 
 \frame 
 {
   \frametitle{TaskTracker}
+  \begin{itemize}
+    \item Executes map and reduce tasks
+    \item Tasks run in a child jvm
+  \end{itemize}
 }
 
-\subsection{Developing MapReduce Jobs}
+\section{Developing MapReduce Jobs}
 
 \frame
 {
   \frametitle{The Lifecycle of a MapReduce job}
-
+  \begin{itemize}
+    \item Split: input files are split and distributes to mappers
+    \item Map: Mappers group raw input to common keys
+    \item Shuffle: Distrubuted mapper output is moved to single reducer based on
+      keys
+    \item Reduce: Groups values are combined by reducer and written to file
+      output
+  \end{itemize}
 }
 
 \frame
 {
   \frametitle{A Sample Job}
-
+  % \begin{itemize}
+  % \end{itemize}
 }
 
 \frame
 {
   \frametitle{Submitting and Monitoring Jobs}
+  % \begin{itemize}
+  % \end{itemize}
+
 }
-
-
-\subsection{Developing a MapReduce Job}
 
 \frame
 {
   \frametitle{Writing Jobs in Java}
+  % \begin{itemize}
+  % \end{itemize}
 }
 
 
-\subsection{Running a Cluster}
+\section{Running a Cluster}
 
 \frame 
 {
   \frametitle{Hosted Hadoop}
-  % Cluster mgmt is time consuming and expensive.
-  % off load to service providers when possible
+  \begin{itemize}
+    \item Cluster mgmt is time consuming and expensive.
+    \item Off load to service providers when possible
+  \end{itemize}
 }
 
 
