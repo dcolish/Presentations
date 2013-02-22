@@ -4,10 +4,43 @@
 \usepackage{hyperref}
 \usepackage{listings}
 \usepackage[all]{xy}
+\usepackage[utf8]{inputenc}
+
+% Default fixed font does not support bold face
+\DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{12} % for bold
+\DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{12}  % for normal
+
+% Custom colors
+\usepackage{color}
+\definecolor{deepblue}{rgb}{0,0,0.5}
+\definecolor{deepred}{rgb}{0.6,0,0}
+\definecolor{deepgreen}{rgb}{0,0.5,0}
 
 \useoutertheme{infolines}
 
 \addbibresource{presentation}
+
+% Python style for highlighting
+\newcommand\pythonstyle{\lstset{
+language=Python,
+basicstyle=\tiny\sffamily,
+otherkeywords={self},             % Add keywords here
+keywordstyle=\tiny\sffamily\color{deepblue},
+emph={MyClass,__init__},          % Custom highlighting
+emphstyle=\tiny\sffamily\color{deepred},    % Custom highlighting style
+stringstyle=\color{deepgreen},
+frame=tb,                         % Any extra options here
+showstringspaces=false            % 
+}}
+
+
+% Python environment
+\lstnewenvironment{python}[1][]
+{
+\pythonstyle
+\lstset{#1}
+}
+{}
 
 \title{Hadoop Hears a Who}
 \author{Dan Colish}
@@ -129,6 +162,10 @@
   \frametitle{A Sample Job}
   \begin{lstlisting}[language=java,basicstyle=\tiny\sffamily]
     public class Sample extends Configured implements Tool {
+      int run(String[] args) {
+        ...
+      }
+
       public static class MapClass extends Mapper<Text, Text, Text, Int> {
         @Override
         public void map(Text key, Text value, Mapper.Context context) {
@@ -149,6 +186,16 @@
   \end{lstlisting}
 \end{frame}
 
+\frame
+{
+  \frametitle{Other MapReduce langauges}
+  \begin{itemize}
+    \item Hadoop Streaming: Use with shell stdin/stdout
+    \item Pig: Semi-structured scripting language
+    \item Hive: SQL-like scripting language
+    \item Cascalog: Prolog-like clojure meta language
+  \end{itemize}
+}
 
 \frame
 {
@@ -158,14 +205,6 @@
 
 }
 
-\frame
-{
-  \frametitle{Writing Jobs in Java}
-  % \begin{itemize}
-  % \end{itemize}
-}
-
-
 \section{Running a Cluster}
 
 \frame 
@@ -174,9 +213,40 @@
   \begin{itemize}
     \item Cluster mgmt is time consuming and expensive.
     \item Off load to service providers when possible
+    \item Use Amazon Elastic MapReduce (EMR)
   \end{itemize}
 }
 
+\begin{frame}[fragile]
+  \frametitle{Submitting to EMR}
+  \begin{python}
+    import datetime, os
+    import boto
+    from boto.emr.instance_group import InstanceGroup
+    from boto.emr.step import InstallPigStep, PigStep
+
+    conn = boto.connect_emr()
+    instance_groups = [
+        InstanceGroup(1, 'MASTER', 'm1.small', 'SPOT', 'master@0.10', '0.10'),
+        InstanceGroup(2, 'CORE', 'm1.small', 'SPOT', 'master@0.10', '0.10'),
+        ]
+
+    pig_file = 's3://elasticmapreduce/samples/pig-apache/do-reports2.pig'
+    INPUT = 's3://elasticmapreduce/samples/pig-apache/input/'
+    OUTPUT = ('s3://org.unencrypted.emr.output/apache_sample/%s' %
+              datetime.datetime.utcnow().strftime("%s"))
+    pig_args = ['-p', 'INPUT=%s' % INPUT,
+                '-p', 'OUTPUT=%s' % OUTPUT]
+
+    pig_step = PigStep('Process Reports', pig_file, pig_args=pig_args)
+    steps = [InstallPigStep(), pig_step]
+
+    job_id = conn.run_jobflow(name='sample apache report',
+        ec2_keyname=os.getenv("EC2_KEY_NAME"), steps=steps,
+        log_uri="s3://org.unencrypted.emr.log/sampleflow_logs", enable_debugging=True,
+        ami_version="latest", instance_groups=instance_groups, keep_alive=True)
+  \end{python}
+\end{frame}
 
 \frame
 {
