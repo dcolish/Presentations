@@ -2,6 +2,7 @@
 \usepackage{beamerthemesplit}
 \usepackage[style=authoryear,hyperref=true,citestyle=numeric]{biblatex} 
 \usepackage{hyperref}
+\usepackage{listings}
 \usepackage[all]{xy}
 
 \useoutertheme{infolines}
@@ -124,12 +125,30 @@
   \end{itemize}
 }
 
-\frame
-{
+\begin{frame}[fragile]
   \frametitle{A Sample Job}
-  % \begin{itemize}
-  % \end{itemize}
-}
+  \begin{lstlisting}[language=java,basicstyle=\tiny\sffamily]
+    public class Sample extends Configured implements Tool {
+      public static class MapClass extends Mapper<Text, Text, Text, Int> {
+        @Override
+        public void map(Text key, Text value, Mapper.Context context) {
+          context.write(key, value);
+        }
+      }
+
+      public static class Reduce extends Reducer<Text, Text, Text, IntWritable> {
+        private IntWritable countWritable = new IntWritable(0);
+        @Override
+        public void map(Text key, Iterable<Text> values, Mapper.Context context) {
+          for (Text _ : values) count++;
+          countWritable.set(count);
+          context.write(key, countWritable);
+        }
+      }
+    }
+  \end{lstlisting}
+\end{frame}
+
 
 \frame
 {
