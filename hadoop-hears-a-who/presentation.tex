@@ -191,21 +191,24 @@ showstringspaces=false            %
   \frametitle{Other MapReduce langauges}
   \begin{itemize}
     \item Hadoop Streaming: Use with shell stdin/stdout
-    \item Pig: Semi-structured scripting language
-    \item Hive: SQL-like scripting language
-    \item Cascalog: Prolog-like clojure meta language
+    \item Pig: Semi-structured scripting language, \url{http://pig.apache.org/}
+    \item Hive: SQL-like scripting language, \url{http://hive.apache.org/}
+    \item Cascalog: Prolog-like clojure meta language, \url{https://github.com/nathanmarz/cascalog}
   \end{itemize}
 }
 
 \frame
 {
   \frametitle{Submitting and Monitoring Jobs}
-  % \begin{itemize}
-  % \end{itemize}
-
+  \begin{itemize}
+    \item Send job jar and any required files to JobTracker
+    \item JobTracker stores job jar and required files in distributed cache
+    \item JobTracker schedules execution
+    \item TaskTrackers update progress to JobTracker
+  \end{itemize}
 }
 
-\section{Running a Cluster}
+\section{Working with Clusters}
 
 \frame 
 {
@@ -214,11 +217,17 @@ showstringspaces=false            %
     \item Cluster mgmt is time consuming and expensive.
     \item Off load to service providers when possible
     \item Use Amazon Elastic MapReduce (EMR)
+    \item Many utility libraries to work with EMR:
+      \begin{itemize}
+        \item boto: \url{http://docs.pythonboto.org/en/latest/}
+        \item mrjob: \url{http://pythonhosted.org/mrjob/}
+        \item lemur: \url{https://github.com/TheClimateCorporation/lemur}
+      \end{itemize}
   \end{itemize}
 }
 
 \begin{frame}[fragile]
-  \frametitle{Submitting to EMR}
+  \frametitle{Sample EMR Script}
   \begin{python}
     import datetime, os
     import boto
